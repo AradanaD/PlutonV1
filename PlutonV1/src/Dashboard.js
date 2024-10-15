@@ -1696,18 +1696,7 @@ class Dashboard extends Component {
 
         <Grid container spacing={2} alignItems= "flex-start">
           <Grid item xs={12} alignItems= "flex-start">
-            <TextField
-              id="standard-basic"
-              className="no-printme"
-              type="search"
-              autoComplete="off"
-              name="search"
-              value={this.state.search}
-              onChange={this.onChange}
-              placeholder="Search by meter ver/ customer/ platform/ config/ testedBy"
-              style={{ width: '25%' }}
-              required
-            />            
+                        
           </Grid>
       
 <Grid item xs={12}>
@@ -1724,6 +1713,18 @@ class Dashboard extends Component {
         + Add Product
       </Button>
     </div>
+    <TextField
+              id="standard-basic"
+              className="no-printme"
+              type="search"
+              autoComplete="off"
+              name="search"
+              value={this.state.search}
+              onChange={this.onChange}
+              placeholder="Search by meter ver/ customer/ platform/ config/ testedBy"
+              style={{ width: '25%' }}
+              required
+            />
     <div className="no-printme">
       <Button
         className="button_style"
