@@ -1,0 +1,40 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+productSchema = new Schema( {
+	name: String,
+	customer: String,
+	accType: String,
+	orderType: String,
+	newCol1: String,
+	newCol2: String,
+	platform: String,
+	config: String,
+	status: String,
+	testedBy: String,
+	rel: Number,
+	reqDate: Date,
+	submissionDate: Date,
+	startDate: Date,
+	endDate: Date,
+	rolloverDate: Date,
+	rolloverDays: Number,
+	rolloverDaysH: Number,
+	waitingDays: Number,
+	waitingDaysH: Number,
+	testingDays: Number,
+	testingDaysH: Number,
+	reportNo: String,
+	releaseDate: Date,
+	reviewedBy: String,
+	codeCompare: String,
+	newFW: String,
+	tBugs: Number,
+	submissionReason: String,
+	image: String,
+	user_id: Schema.ObjectId,
+	is_delete: { type: Boolean, default: false },
+	date : { type : Date, default: Date.now }
+}),
+
+module.exports = mongoose.model('product', productSchema, 'products');

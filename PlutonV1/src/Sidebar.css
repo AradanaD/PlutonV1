@@ -1,0 +1,66 @@
+/* Styles for sidebar */
+.sidebar {
+    background-color: #333;
+    color: #fff;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease; /* Smooth transition for showing/hiding */
+  }
+  
+  .sidebar.hidden {
+    display: none; /* Hide the sidebar */
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+  }
+  
+  .sidebar ul li a:hover {
+    background-color: #555;
+  }
+  
+  .sidebar ul li a.active {
+    background-color: #777;
+  }
+  
+  /* Styles for toggle button */
+  .sidebar-toggle {
+    display: none; /* Hide by default */
+  }
+  
+  @media (max-width: 1024px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.show {
+      transform: translateX(0);
+    }
+    .sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  }
+  

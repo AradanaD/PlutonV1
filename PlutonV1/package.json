@@ -1,0 +1,77 @@
+{
+  "name": "pluton",
+  "version": "1.0.0",
+  "description": "Combined backend and frontend project",
+  "scripts": {
+    "start:backend": "node server.js",
+    "start:frontend": "cross-env PORT=1048 react-scripts start",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@material-ui/core": "^4.1.4",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@mui/material": "^5.15.15",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@version/react-router-v3": "^1.0.0",
+    "axios": "^1.6.8",
+    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "crypto-browserify": "^3.12.0",
+    "dotenv": "^16.4.5",
+    "excel": "^1.0.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "imdb-api": "^4.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^3.1.2",
+    "material-ui": "^0.15.0",
+    "moment": "^2.30.1",
+    "mongoose": "^5.13.22",
+    "multer": "^1.4.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.10.2",
+    "react-bootstrap-sweetalert": "^5.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "^5.0.1",
+    "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "get-port": "^5.1.1"
+  },
+  "proxy": "http://localhost:2001",
+  "author": "Aradana",
+  "license": "ISC",
+  "keywords": [
+    "product",
+    "CRUD"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
