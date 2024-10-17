@@ -159,10 +159,7 @@ class Login extends React.Component {
   render() {
     return (    
       <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3>&nbsp; PLUTON </h3>
-        <h5>version 1.0.0 &nbsp; </h5>
-      </div>
+        <h2> PLUTON </h2>
       <div style={GradientBackground}>                
         <Box sx={LoginCard}>          
         <h2> Login </h2>
