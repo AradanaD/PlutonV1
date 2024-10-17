@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
   Button, TextField, Dialog, DialogActions, LinearProgress, IconButton, Select, Input,
-  DialogTitle, DialogContent, TableBody, Table, AppBar, Toolbar, Typography,MenuItem,
+  DialogTitle, DialogContent, TableBody, Table, AppBar, Toolbar, Typography, MenuItem,
   TableContainer, TableHead, TableRow, TableCell, Box, Grid, FormControl, InputLabel
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { Pagination } from '@material-ui/lab';
 import swal from 'sweetalert';
 import { withRouter } from './utils';
@@ -245,29 +246,66 @@ class Dashboard extends Component {
     });
   }
   
+  // getProduct = () => {
+  //   this.setState({ loading: true });
+  //   let data = '?';
+  //   data = `${data}page=${this.state.page}`;
+  //   if (this.state.search) {
+  //     data = `${data}&search=${this.state.search}&searchFields=customer,name,platform,status,config,testedBy`;
+  //   }
+
+  //   axios.get(`${API_URL}/get-product${data}`, {
+  //     headers: {
+  //       'token': this.state.token
+  //     }
+  //   }).then((res) => {
+  //     this.setState({ loading: false, products: res.data.products, pages: res.data.pages });
+  //   }).catch((err) => {
+  //     swal({
+  //       text: err.response.data.errorMessage,
+  //       icon: "error",
+  //       type: "error"
+  //     });
+  //     this.setState({ loading: false, products: [], pages: 0 }, () => { });
+  //   });
+  // }  
+
   getProduct = () => {
     this.setState({ loading: true });
     let data = '?';
     data = `${data}page=${this.state.page}`;
     if (this.state.search) {
-      data = `${data}&search=${this.state.search}&searchFields=customer,name,platform,config,testedBy`;
+      data = `${data}&search=${this.state.search}`;
     }
-
+  
     axios.get(`${API_URL}/get-product${data}`, {
       headers: {
         'token': this.state.token
       }
     }).then((res) => {
-      this.setState({ loading: false, products: res.data.products, pages: res.data.pages });
+      this.setState({ 
+        loading: false, 
+        products: res.data.products, 
+        pages: res.data.pages,
+        totalMatches: res.data.total // Update state with the total matches count
+      });
     }).catch((err) => {
       swal({
         text: err.response.data.errorMessage,
         icon: "error",
         type: "error"
       });
-      this.setState({ loading: false, products: [], pages: 0 }, () => { });
+      this.setState({ loading: false, products: [], pages: 0, totalMatches: 0 });
     });
-  }  
+  }
+  
+  // Update the search field onChange handler to call getProduct as the user types
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value }, () => {
+      this.getProduct(); // Fetch updated results and count
+    });
+  };
+    
 
   deleteProduct = (id) => {
     swal({
@@ -606,37 +644,7 @@ class Dashboard extends Component {
     });
 
   }
-//   axios.post(`${API_URL}/update-product`, product, {
-//     headers: {
-//       'content-type': 'application/json',
-//       'token': this.state.token
-//     }
-//   }).then((res) => {
-//     swal({
-//       text: res.data.title,
-//       icon: "success",
-//       type: "success"
-//     });
 
-//     this.handleProductEditClose();
-
-//     // Create a new object with only the updated properties
-//     const updatedState = {
-//       page: 1
-//     };
-
-//     this.setState(updatedState, () => {
-//       this.getProduct();
-//     });
-//   }).catch((err) => {
-//     swal({
-//       text: err.response.data.errorMessage,
-//       icon: "error",
-//       type: "error"
-//     });
-//     this.handleProductEditClose();
-//   });
-// }
 
   handleProductOpen = () => {
     this.setState({
@@ -1212,12 +1220,12 @@ class Dashboard extends Component {
 
           <DialogActions>
             <Button onClick={this.handleProductEditClose} color="primary">
-              Cancel
+              Close
             </Button>
             <Button              
               // disabled={this.state.name == '' || this.state.customer == '' || this.state.accType == '' || this.state.orderType == '' || this.state.newCol1 == '' || this.state.newCol2 == '' || this.state.platform == '' || this.state.reqDate == '' || this.state.submissionDate == '' || this.state.startDate == '' || this.state.endDate == '' || this.state.rolloverDate == '' || this.state.rolloverDays == '' || this.state.rolloverDaysH  == '' || this.state.waitingDays  == '' || this.state.waitingDaysH  == '' || this.state.testingDays  == '' || this.state.testingDaysH == '' || this.state.config == '' || this.state.status == '' || this.state.testedBy == '' || this.state.rel == '' || this.state.reportNo == '' || this.state.releaseDate == '' || this.state.reviewedBy == '' || this.state.codeCompare == '' || this.state.newFW == '' || this.state.tBugs == '' || this.state.submissionReason == ''}
               onClick={(e) => this.updateProduct()} color="primary" autoFocus>
-              Edit Product
+              Save
             </Button>
           </DialogActions>
         </Dialog>
@@ -1680,19 +1688,15 @@ class Dashboard extends Component {
 
           <DialogActions>
             <Button onClick={this.handleProductClose} color="primary">
-              Cancel
+              Close
             </Button>
             <Button
               //disabled={this.state.name == '' || this.state.customer == '' || this.state.accType == '' || this.state.orderType == '' || this.state.newCol1 == '' || this.state.newCol2 == '' || this.state.platform == '' || this.state.reqDate == '' || this.state.submissionDate == '' || this.state.startDate == '' || this.state.endDate == '' || this.state.rolloverDate == '' || this.state.rolloverDays  == '' || this.state.rolloverDaysH  == '' || this.state.waitingDaysH  == '' || this.state.testingDays  == '' || this.state.testingDaysH == '' || this.state.config == '' || this.state.status == '' || this.state.testedBy == '' || this.state.rel == '' || this.state.reportNo == '' || this.state.releaseDate == '' || this.state.reviewedBy == '' || this.state.codeCompare == '' || this.state.newFW == '' || this.state.submissionReason == '' || this.state.tBugs == '' }
               onClick={(e) => this.addProduct()} color="primary" autoFocus>
-              Add Product
+              Save
             </Button>
           </DialogActions>
         </Dialog>
-
-        <div>
-          <br/>
-        </div>
 
         <Grid container spacing={2} alignItems= "flex-start">
           <Grid item xs={12} alignItems= "flex-start">
@@ -1713,7 +1717,7 @@ class Dashboard extends Component {
         + Add Product
       </Button>
     </div>
-    <TextField
+    {/* <TextField
               id="standard-basic"
               className="no-printme"
               type="search"
@@ -1721,10 +1725,29 @@ class Dashboard extends Component {
               name="search"
               value={this.state.search}
               onChange={this.onChange}
-              placeholder="Search by meter ver/ customer/ platform/ config/ testedBy"
+              placeholder="Search"
               style={{ width: '25%' }}
               required
-            />
+            /> */}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+  <TextField
+    id="standard-basic"
+    className="no-printme"
+    type="search"
+    autoComplete="off"
+    name="search"
+    value={this.state.search}
+    onChange={this.onChange}
+    placeholder="Search"
+    style={{ width: '50%' }}
+    required
+  />
+  <span style={{ marginLeft: '5px' }}>
+    count: {this.state.totalMatches}
+  </span>
+</div>
+
+
     <div className="no-printme">
       <Button
         className="button_style"
@@ -1740,19 +1763,13 @@ class Dashboard extends Component {
   </Box>
 </Grid>
 </Grid>
-
-
-
         {/* Product Table */}
         <br />
         <TableContainer>
           <Table striped>
             <TableHead>
-              <TableRow>   
-                <TableCell><span></span></TableCell>                  
-                {/* {username === 'admin' && ( */}
-                  <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>
-                {/* )} */}           
+              <TableRow>
+                <TableCell style={{ fontWeight: 'bold' }}>Actions</TableCell>        
                 <TableCell style={{ fontWeight: 'bold' }}>Meter Version</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Release Number</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Customer</TableCell>
@@ -1770,12 +1787,12 @@ class Dashboard extends Component {
                 <TableCell style={{ fontWeight: 'bold' }}>&nbsp;&nbsp;Start&nbsp;Date&nbsp;&nbsp;</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>&nbsp;&nbsp;End&nbsp;Date&nbsp;&nbsp;&nbsp;</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Rollover&nbsp;Date</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Rollover Days (including holiday)</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Rollover Days (excluding holiday)</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Waiting Days (including holiday)</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Waiting Days (excluding holiday)</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Testing Days (including holiday)</TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>Testing Days (excluding holiday)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Rollover Days (wHol)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Rollover Days (w/oHol)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Waiting Days (wHol)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Waiting Days (w/oHol)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Testing Days (wHol)</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Testing Days (w/oHol)</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Report Number</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Release&nbsp;Date</TableCell>
                 <TableCell style={{ fontWeight: 'bold' }}>Reviewed By</TableCell>
@@ -1792,13 +1809,8 @@ class Dashboard extends Component {
                 
                 <React.Fragment key={index}>
                   <TableRow>
-                    <TableCell>
-                    {/* <IconButton onClick={(e) => this.handleRowClick(e,product)}>
-                      <KeyboardArrowDown />
-                    </IconButton> */}
-                    </TableCell>
                     {/* {username === 'admin' && ( */}
-                    <TableCell>
+                    {/* <TableCell>
                       <div style={{display: 'flex', justifyContent: 'space-between'}} >
                         <Button
                           className="button_style"
@@ -1818,10 +1830,35 @@ class Dashboard extends Component {
                           onClick={() => this.deleteProduct(product._id)}
                           style={{ backgroundColor: '#b56576'}}
                         >
-                          Delete
+                          DEL
                         </Button>
                       </div>
-                      </TableCell>
+                      </TableCell> */}
+
+<TableCell style={{ padding: '0', width: '1%', whiteSpace: 'nowrap' }}>
+  <div style={{ display: 'flex', justifyContent: 'center', gap: '1px' }}>
+    <Button
+      className="button_style"
+      variant="contained"
+      color="primary"
+      size="small"
+      onClick={() => this.handleProductEditOpen(product)}
+      style={{ minWidth: '25px', padding: '2px 4px', backgroundColor: '#355070' }}
+    >
+      <EditOutlinedIcon style={{ fontSize: '16px' }} />
+    </Button>
+    <Button
+      className="button_style"
+      variant="contained"
+      color="secondary"
+      size="small"
+      onClick={() => this.deleteProduct(product._id)}
+      style={{ minWidth: '25px', padding: '2px 4px', backgroundColor: '#b56576' }}
+    >
+      <DeleteOutlinedIcon style={{ fontSize: '16px' }} />
+    </Button>
+  </div>
+</TableCell>
                     {/* )} */}
                     <TableCell>{product.name}</TableCell>
                     <TableCell>{product.rel}</TableCell>
@@ -1869,8 +1906,7 @@ class Dashboard extends Component {
                     <TableCell>{product.reviewedBy}</TableCell>
                     <TableCell>{product.codeCompare}</TableCell>
                     <TableCell>{product.newFW}</TableCell>
-                    <TableCell>{product.tBugs}</TableCell>                 
-                    
+                    <TableCell>{product.tBugs}</TableCell>                    
                   </TableRow>
                   {this.state.expanded[index] && (
                     <div style={{fontFamily: 'sans-serif', textAlign: "left", fontSize: "14px"}}>

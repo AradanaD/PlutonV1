@@ -288,8 +288,6 @@ app.post("/update-product", (req, res) => {
             status: false
           });
         }
-
-        // Update only provided fields
         Object.keys(req.body).forEach(key => {
           if (req.body[key] !== undefined && req.body[key] !== null) {
             new_product[key] = req.body[key];
@@ -356,6 +354,66 @@ app.post("/delete-product", (req, res) => {
   }
 });
 
+// app.get("/get-product", (req, res) => {
+//   try {
+//     var query = {};
+//     query["$and"] = [];
+//     query["$and"].push({
+//       is_delete: false
+//     });
+//     if (req.query && req.query.search) {
+//       const searchQuery = { $regex: req.query.search, $options: 'i' };
+//       query["$and"].push({
+//         $or: [
+//           { customer: searchQuery },
+//           { name: searchQuery },
+//           { platform: searchQuery },
+//           { config: searchQuery },
+//           { testedBy: searchQuery },
+//           { status: searchQuery}
+//         ]
+//       });
+//     }
+//     // var perPage = 5;
+//     var perPage = 5000;
+//     var page = req.query.page || 1;
+//     product.find(query, { date: 1, name: 1, id: 1,customer: 1, accType: 1,orderType: 1, newCol1: 1, newCol2: 1,platform: 1,  config: 1, status: 1, testedBy: 1, reqDate: 1, submissionDate: 1, startDate: 1, endDate: 1, rolloverDate: 1, rolloverDays: 1, rolloverDaysH: 1, waitingDays: 1, waitingDaysH: 1, testingDays: 1, testingDaysH: 1, reportNo: 1, releaseDate: 1, reviewedBy: 1, codeCompare: 1, newFW: 1, rel: 1, reportNo: 1, releaseDate: 1, reviewedBy: 1, codeCompare: 1, newFW: 1, tBugs: 1, submissionReason: 1, image: 1 })
+//       .sort({ reqDate: -1 })
+//       .skip((perPage * page) - perPage).limit(perPage)
+//       .then((data) => {
+//         //console.log("Data from backend:", data);
+//         product.find(query).count()
+//           .then((count) => {
+//             if (data && data.length > 0) {
+//               res.status(200).json({
+//                 status: true,
+//                 title: 'Product retrived.',
+//                 products: data,
+//                 current_page: page,
+//                 total: count,
+//                 pages: Math.ceil(count / perPage),
+//               });
+//             } else {
+//               res.status(400).json({
+//                 errorMessage: 'There is no product!',
+//                 status: false
+//               });
+//             }
+//           });
+//       }).catch(err => {
+//         res.status(400).json({
+//           errorMessage: err.message || err,
+//           status: false
+//         });
+//       });
+//   } catch (e) {
+//     res.status(400).json({
+//       errorMessage: 'Something went wrong!',
+//       status: false
+//     });
+//   }
+// });
+
 app.get("/get-product", (req, res) => {
   try {
     var query = {};
@@ -371,32 +429,34 @@ app.get("/get-product", (req, res) => {
           { name: searchQuery },
           { platform: searchQuery },
           { config: searchQuery },
-          { testedBy: searchQuery }
+          { testedBy: searchQuery },
+          { status: searchQuery }
         ]
       });
     }
-    // var perPage = 5;
+    
     var perPage = 5000;
     var page = req.query.page || 1;
-    product.find(query, { date: 1, name: 1, id: 1,customer: 1, accType: 1,orderType: 1, newCol1: 1, newCol2: 1,platform: 1,  config: 1, status: 1, testedBy: 1, reqDate: 1, submissionDate: 1, startDate: 1, endDate: 1, rolloverDate: 1, rolloverDays: 1, rolloverDaysH: 1, waitingDays: 1, waitingDaysH: 1, testingDays: 1, testingDaysH: 1, reportNo: 1, releaseDate: 1, reviewedBy: 1, codeCompare: 1, newFW: 1, rel: 1, reportNo: 1, releaseDate: 1, reviewedBy: 1, codeCompare: 1, newFW: 1, tBugs: 1, submissionReason: 1, image: 1 })
-      .sort({ reqDate: -1 })
-      .skip((perPage * page) - perPage).limit(perPage)
-      .then((data) => {
-        //console.log("Data from backend:", data);
-        product.find(query).count()
-          .then((count) => {
+
+    // Count occurrences of matching products across any fields
+    product.find(query).count() // Get count for matching products
+      .then((totalMatches) => {
+        product.find(query, { /* selected fields here */ })
+          .sort({ reqDate: -1 })
+          .skip((perPage * page) - perPage).limit(perPage)
+          .then((data) => {
             if (data && data.length > 0) {
               res.status(200).json({
                 status: true,
-                title: 'Product retrived.',
+                title: 'Products retrieved.',
                 products: data,
                 current_page: page,
-                total: count,
-                pages: Math.ceil(count / perPage),
+                total: totalMatches, // Send the total match count
+                pages: Math.ceil(totalMatches / perPage),
               });
             } else {
               res.status(400).json({
-                errorMessage: 'There is no product!',
+                errorMessage: 'No products found!',
                 status: false
               });
             }
@@ -414,6 +474,7 @@ app.get("/get-product", (req, res) => {
     });
   }
 });
+
 
 app.get("/get-users", (req, res) => {
   try {
@@ -577,7 +638,8 @@ app.get("/graph-product", (req, res) => {
           { name: searchQuery },
           { platform: searchQuery },
           { config: searchQuery },
-          { testedBy: searchQuery }
+          { testedBy: searchQuery },
+          { status: searchQuery}
         ]
       });
     }
