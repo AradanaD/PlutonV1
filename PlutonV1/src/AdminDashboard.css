@@ -1,7 +1,7 @@
 /* Styles for content */
 .content {
   margin-left: 220px;
-  margin-top: 64px;
+  margin-top: 10px;
 }
 
 .top-bar {
@@ -13,7 +13,7 @@
 .chart-card {
   padding: 20px;
   margin-bottom: 20px;
-  height: 350px;
+  height: 255px;
 }
 
 .chart-canvas {
@@ -26,8 +26,11 @@
 }
 
 .table-card {
-  padding: 20px;
-  margin-top: 20px;
+  padding-top: 1px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
 }
 
 .table-heading {
