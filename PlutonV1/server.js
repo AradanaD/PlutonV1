@@ -323,6 +323,220 @@ app.post("/update-product", (req, res) => {
 });
 
 
+
+// OG UPDATE- PRODUCT PLEASE DO NOT DELETE THIS  
+
+
+// app.post("/update-product", (req, res) => {
+//   try {
+//     if (req.body && req.body.id) {
+//       product.findById(req.body.id, (err, new_product) => {
+//         if (err || !new_product) {
+//           return res.status(404).json({
+//             errorMessage: 'Product not found!',
+//             status: false
+//           });
+//         }
+
+//         // Validation function to check data types
+//         const validateAndSet = (key, value) => {
+//           const schemaTypes = {
+//             name: 'string',
+//             customer: 'string',
+//             accType: 'string',
+//             orderType: 'string',
+//             newCol1: 'string',
+//             newCol2: 'string',
+//             platform: 'string',
+//             config: 'string',
+//             status: 'string',
+//             testedBy: 'string',
+//             rel: 'number',
+//             reqDate: 'date',
+//             submissionDate: 'date',
+//             startDate: 'date',
+//             endDate: 'date',
+//             rolloverDate: 'date',
+//             rolloverDays: 'number',
+//             rolloverDaysH: 'number',
+//             waitingDays: 'number',
+//             waitingDaysH: 'number',
+//             testingDays: 'number',
+//             testingDaysH: 'number',
+//             reportNo: 'string',
+//             releaseDate: 'date',
+//             reviewedBy: 'string',
+//             codeCompare: 'string',
+//             newFW: 'string',
+//             tBugs: 'number',
+//             submissionReason: 'string',
+//             image: 'string',
+//             user_id: 'objectid',
+//             is_delete: 'boolean'
+//           };
+
+//           const expectedType = schemaTypes[key];
+
+//           switch (expectedType) {
+//             case 'string':
+//               return typeof value === 'string' ? value : '0';
+//             case 'number':
+//               return typeof value === 'number' ? value : 0;
+//             case 'date':
+//               return new Date(value).toString() !== 'Invalid Date' ? new Date(value) : null;
+//             case 'boolean':
+//               return typeof value === 'boolean' ? value : false;
+//             case 'objectid':
+//               return mongoose.Types.ObjectId.isValid(value) ? value : null;
+//             default:
+//               return value;
+//           }
+//         };
+
+//         // Update fields with validation
+//         Object.keys(req.body).forEach(key => {
+//           if (req.body[key] !== undefined && req.body[key] !== null) {
+//             new_product[key] = validateAndSet(key, req.body[key]);
+//           }
+//         });
+
+//         // Save updated product
+//         new_product.save((err, data) => {
+//           if (err) {
+//             res.status(400).json({
+//               errorMessage: err.message,
+//               status: false
+//             });
+//           } else {
+//             res.status(200).json({
+//               status: true,
+//               title: 'Product updated.'
+//             });
+//           }
+//         });
+//       });
+//     } else {
+//       res.status(400).json({
+//         errorMessage: 'Add proper parameter first!',
+//         status: false
+//       });
+//     }
+//   } catch (e) {
+//     res.status(400).json({
+//       errorMessage: 'Something went wrong!',
+//       status: false
+//     });
+//   }
+// });
+
+
+
+// app.post("/update-product", (req, res) => {
+//   try {
+//     if (req.body && req.body.id) {
+//       product.findById(req.body.id, (err, new_product) => {
+//         if (err || !new_product) {
+//           return res.status(404).json({
+//             errorMessage: 'Product not found!',
+//             status: false
+//           });
+//         }
+
+//         // Validation function to check data types
+//         const validateAndSet = (key, value) => {
+//           const schemaTypes = {
+//             name: 'string',
+//             customer: 'string',
+//             accType: 'string',
+//             orderType: 'string',
+//             newCol1: 'string',
+//             newCol2: 'string',
+//             platform: 'string',
+//             config: 'string',
+//             status: 'string',
+//             testedBy: 'string',
+//             rel: 'number',
+//             reqDate: 'date',
+//             submissionDate: 'date',
+//             startDate: 'date',
+//             endDate: 'date',
+//             rolloverDate: 'date',
+//             rolloverDays: 'number',
+//             rolloverDaysH: 'number',
+//             waitingDays: 'number',
+//             waitingDaysH: 'number',
+//             testingDays: 'number',
+//             testingDaysH: 'number',
+//             reportNo: 'string',
+//             releaseDate: 'date',
+//             reviewedBy: 'string',
+//             codeCompare: 'string',
+//             newFW: 'string',
+//             tBugs: 'number',
+//             submissionReason: 'string',
+//             image: 'string',
+//             user_id: 'objectid',
+//             is_delete: 'boolean'
+//           };
+
+//           const expectedType = schemaTypes[key];
+
+//           switch (expectedType) {
+//             case 'string':
+//               return typeof value === 'string' ? value : '0';
+//             case 'number':
+//               return typeof value === 'number' && !isNaN(value) ? value : 0;
+//             case 'date':
+//               const dateValue = new Date(value);
+//               return dateValue.toString() !== 'Invalid Date' ? dateValue : null;
+//             case 'boolean':
+//               return typeof value === 'boolean' ? value : false;
+//             case 'objectid':
+//               return mongoose.Types.ObjectId.isValid(value) ? value : null;
+//             default:
+//               return value;
+//           }
+//         };
+
+//         // Update fields with validation
+//         Object.keys(req.body).forEach(key => {
+//           if (req.body[key] !== undefined && req.body[key] !== null) {
+//             new_product[key] = validateAndSet(key, req.body[key]);
+//           }
+//         });
+
+//         // Save updated product
+//         new_product.save((err, data) => {
+//           if (err) {
+//             res.status(400).json({
+//               errorMessage: err.message,
+//               status: false
+//             });
+//           } else {
+//             res.status(200).json({
+//               status: true,
+//               title: 'Product updated.'
+//             });
+//           }
+//         });
+//       });
+//     } else {
+//       res.status(400).json({
+//         errorMessage: 'Add proper parameter first!',
+//         status: false
+//       });
+//     }
+//   } catch (e) {
+//     res.status(400).json({
+//       errorMessage: 'Something went wrong!',
+//       status: false
+//     });
+//   }
+// });
+
+
+
+
 /* Delete Product API */
 app.post("/delete-product", (req, res) => {
   try {
