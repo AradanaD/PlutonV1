@@ -1636,7 +1636,7 @@ class Dashboard extends Component {
       shrink: true,
     }}
              
-              // required
+              // required 
             /><br />
             <TextField
               id="standard-basic"
@@ -1703,8 +1703,8 @@ class Dashboard extends Component {
                         
           </Grid>
       
-<Grid item xs={12}>
-  <Box display="flex" justifyContent="space-between">
+          <Grid item xs={12}>
+  <Box display="flex" justifyContent="space-between" alignItems="center" >
     <div className="no-printme">
       <Button
         className="button_style"
@@ -1716,49 +1716,37 @@ class Dashboard extends Component {
       >
         + Add Product
       </Button>
-    </div>
-    {/* <TextField
-              id="standard-basic"
-              className="no-printme"
-              type="search"
-              autoComplete="off"
-              name="search"
-              value={this.state.search}
-              onChange={this.onChange}
-              placeholder="Search"
-              style={{ width: '25%' }}
-              required
-            /> */}
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-  <TextField
-    id="standard-basic"
-    className="no-printme"
-    type="search"
-    autoComplete="off"
-    name="search"
-    value={this.state.search}
-    onChange={this.onChange}
-    placeholder="Search"
-    style={{ width: '50%' }}
-    required
-  />
-  <span style={{ marginLeft: '5px' }}>
-    count: {this.state.totalMatches}
-  </span>
-</div>
-
-
-    <div className="no-printme">
       <Button
         className="button_style"
         variant="contained"
         color="primary"
         size="small"
         onClick={this.handleExport}
-        style={{ backgroundColor: '#2b2b2b' }}
+        style={{ backgroundColor: '#2b2b2b', marginLeft: '10px' }}
       >
         EXPORT
       </Button>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <span>
+        <TextField 
+          id="standard-basic"
+          className="no-printme"
+          type="search"
+          autoComplete="off"
+          name="search"
+          value={this.state.search}
+          onChange={this.onChange}
+          placeholder="Search"
+          style={{ width: '100%' }}
+          required
+        />
+      </span>
+    </div>
+    <div>
+      <span style={{ marginRight: '10px' }}>
+        Count: {this.state.totalMatches}
+      </span>
     </div>
   </Box>
 </Grid>
