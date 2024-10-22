@@ -1,56 +1,77 @@
 /* Styles for sidebar */
 .sidebar {
-    background-color: #333;
-    color: #fff;
-    width: 200px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    overflow-y: auto;
-    transition: transform 0.3s ease; /* Smooth transition for showing/hiding */
-  }
-  
-  .sidebar.hidden {
-    display: none; /* Hide the sidebar */
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    padding: 10px;
-  }
-  
-  .sidebar ul li a {
-    text-decoration: none;
-    color: #fff;
-    display: block;
-  }
-  
-  .sidebar ul li a:hover {
-    background-color: #555;
-  }
-  
-  .sidebar ul li a.active {
-    background-color: #777;
-  }
-  
-  /* Styles for toggle button */
-  .sidebar-toggle {
-    display: none; /* Hide by default */
-  }
-  
-  @media (max-width: 1024px) {
-    .sidebar {
+  background-color: #333;
+  color: #fff;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease; /* Smooth transition for showing/hiding */
+}
+
+.sidebar.hidden {
+  display: none; /* Hide the sidebar */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  flex-grow: 1; /* Allow the list to grow and take available space */
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+}
+
+.sidebar ul li a:hover {
+  background-color: #555;
+}
+
+.sidebar ul li a.active {
+  background-color: #777;
+}
+
+/* Styles for logout button */
+.sidebar-bottom {
+  padding: 10px; /* Add some padding for the button */
+}
+
+.logout-button {
+  width: 100%; /* Make the button full width */
+  background-color: #d9534f; /* Bootstrap danger color */
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #d3d3d3; /* Darker shade on hover */
+}
+
+/* Styles for toggle button */
+.sidebar-toggle {
+  display: none; /* Hide by default */
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
       transform: translateX(-100%);
-    }
-    .sidebar.show {
+  }
+  .sidebar.show {
       transform: translateX(0);
-    }
-    .sidebar-toggle {
+  }
+  .sidebar-toggle {
       display: block;
       position: fixed;
       top: 10px;
@@ -61,6 +82,5 @@
       padding: 10px;
       cursor: pointer;
       z-index: 1000;
-    }
   }
-  
+}
