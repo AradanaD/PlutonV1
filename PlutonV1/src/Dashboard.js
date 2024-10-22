@@ -351,9 +351,17 @@ class Dashboard extends Component {
     this.setState({ page: value });
   };
 
+  // logOut = () => {
+  //   localStorage.setItem('token', null);
+  //   this.props.navigate("/");
+  // }
+
   logOut = () => {
-    localStorage.setItem('token', null);
-    this.props.navigate("/");
+    const confirmation = window.confirm("Are you sure you want to log out?");
+    if (confirmation) {
+      localStorage.setItem('token', null);
+      this.props.navigate("/");
+    }
   }
 
   onChange = (e, newValue) => {

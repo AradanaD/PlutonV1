@@ -164,11 +164,21 @@ const Tester = () => {
   setPage(newPage);
   getProduct(token, newPage, search); // Call getProduct with the new page
 };
-  const logOut = () => {
-    localStorage.setItem('token', null);
-    navigate("/");
-  };
+  // const logOut = () => {
+  //   localStorage.setItem('token', null);
+  //   navigate("/");
+  // };
  
+
+  const logOut = () => {
+    const confirmation = window.confirm("Are you sure you want to log out?");
+    if (confirmation) {
+      localStorage.setItem('token', null);
+      navigate("/");
+    }
+  };
+
+
   const goToProfile = () => {
     navigate("/profile");
   };
