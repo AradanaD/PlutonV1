@@ -8,6 +8,7 @@ import './AdminDashboard.css';  // Import the CSS file
 import { NavLink } from 'react-router-dom'; // Import NavLink
 import Sidebar from './Sidebar';
 import moment from 'moment';
+import { Pagination } from '@material-ui/lab';
 const API_URL = process.env.REACT_APP_API_URL; // For create-react-app
 
 
@@ -28,8 +29,10 @@ class AdminDashboard extends Component {
       products: [],
       loading: false,
       filter: 'All',
-      //
-      tableFilter: 'In Progress',
+      
+      tableFilter: 'All',
+      currentPage: 1, // Current page state
+      itemsPerPage: 5, // Items per page
       charts: {
         barChart: null,
         pieChart: null,
@@ -45,7 +48,23 @@ class AdminDashboard extends Component {
     };
     //this.logOut = this.logOut.bind(this);
   }
+  // pagination
+  handleTableFilterChange = (filter) => {
+    this.setState({ tableFilter: filter, currentPage: 1 }, this.getProduct); // Reset to first page on filter change
+  }
+
+  getFilteredProducts = () => {
+    const { products, tableFilter } = this.state;
+    return products.filter(product => {
+      if (tableFilter === 'All') return ['In Progress', 'In progress_R', 'Pending'].includes(product.status);
+      if (tableFilter === 'In Progress') return product.status === 'In Progress';
+      if (tableFilter === 'In Progress R') return product.status === 'In progress_R';
+      if (tableFilter === 'Pending') return product.status === 'Pending';
+      return false; // Default case
+    });
+  }
   
+  //
   getDateCounts = () => {
     const dateCounts = {};
     this.state.products.forEach((product) => {
@@ -347,27 +366,38 @@ class AdminDashboard extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    //const { products } = this.state;
+    //pagination
+    const { products, currentPage, itemsPerPage } = this.state;
+
+    // Filter products based on the table filter
+    const filteredProducts = this.getFilteredProducts(); // Use the existing method to get filtered products
+
+    // Calculate total pages based on filtered products
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    
+    // Get the current items to display
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentProducts = filteredProducts
+      .sort((a, b) => new Date(b.reqDate) - new Date(a.reqDate))
+      .slice(indexOfFirstProduct, indexOfLastProduct); // Get current products based on pagination
+    //
     return (
       <div className="dashboard-container">
         <div className='top-bar'>
         {this.state.loading && <LinearProgress size={40} />}
         <AppBar position="static" style={{ backgroundColor: '#2b2b2b' }}>
-  <Toolbar style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+  <Toolbar style={{ display: 'flex',  width: '96.5%' }}>
     <Typography variant="h6" className="title" style={{ whiteSpace: 'nowrap' }}>
       Admin Dashboard
     </Typography>
-    <Box display="flex" justifyContent="center" flexGrow={1}>
+    <Box display="flex" justifyContent="flex-end"  flexGrow={1} >
       <Button variant="contained" size="small" color={this.state.filter === 'All' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('All')}>All</Button>&nbsp;
       <Button variant="contained" size="small" color={this.state.filter === 'Order' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('Order')}>Order</Button>&nbsp;
       <Button variant="contained" size="small" color={this.state.filter === 'Tender' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('Tender')}>Tender</Button>
     </Box>
-    <Box display="flex" justifyContent="flex-end" marginRight={4}>
-      <NavLink to="/User  Management" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" size="small" style={{ backgroundColor: '#d3d3d3', color: 'black' }}>Users</Button>&nbsp;
-      </NavLink>
-      <Button variant="contained" size="small" onClick={this.logOut} style={{ backgroundColor: '#d3d3d3', color: 'black' }}>Logout</Button>&nbsp;
-    </Box>
+    
   </Toolbar>
 </AppBar>
         </div>
@@ -375,9 +405,7 @@ class AdminDashboard extends Component {
         <Sidebar/>
         <div className="content">
         <div className="filter-buttons"  style={{ marginBottom: '10px' }}>
-  {/* <Button variant="contained" color={this.state.filter === 'All' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('All')}>All</Button>&nbsp;
-  &nbsp;<Button variant="contained" color={this.state.filter === 'Order' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('Order')}>Order</Button>&nbsp;
-  &nbsp;<Button variant="contained" color={this.state.filter === 'Tender' ? 'primary' : 'default'} onClick={() => this.handleFilterChange('Tender')}>Tender</Button> */}
+  
 </div>
           {/* <Typography variant="h6" className="charts-heading">Visual Analysis</Typography><br /> */}
           <Grid container spacing={2}>
@@ -407,16 +435,25 @@ class AdminDashboard extends Component {
               </Paper>
             </Grid>
           </Grid>
-          <Paper className="table-card" >
+          <Paper className="table-card"  >
             <Typography variant="h6" className="table-heading"  >Latest Firmware</Typography>
           
             {/* <br /> */}
             
-        <div className="filter-buttons" style={{ marginBottom: '10px' }}>
-  {/* <Button variant="contained" color={this.state.tableFilter === 'All' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('All')}>All</Button>&nbsp; */}
-  &nbsp;<Button variant="contained" size="small" color={this.state.tableFilter === 'In Progress' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('In Progress')}>In Progress</Button>&nbsp;
-  &nbsp;<Button variant="contained" size="small" color={this.state.tableFilter === 'Pending' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('Pending')}>Pending</Button>
-</div>
+          <div className="filter-buttons" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <div  style={{ display: 'flex', gap: '1px' }} >
+            <Button variant="contained" size="small" color={this.state.tableFilter === 'All' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('All')}>All</Button> 
+            &nbsp;<Button variant="contained" size="small" color={this.state.tableFilter === 'In Progress' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('In Progress')}>In Progress</Button>
+            &nbsp;<Button variant="contained" size="small" color={this.state.tableFilter === 'In progress_R' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('In Progress R')}>In Progress R</Button>
+            &nbsp;<Button variant="contained" size="small" color={this.state.tableFilter === 'Pending' ? 'primary' : 'default'} onClick={() => this.handleTableFilterChange('Pending')}>Pending</Button>
+            </div>
+            
+           <div style={{ marginLeft: 'auto' }}>
+            <Typography variant="h7">
+              Count: {this.getFilteredProducts().length} {/* Adjust the count based on your filtering logic */}
+            </Typography>
+          </div>
+         </div>
 
             <TableContainer>
               <Table striped>
@@ -438,12 +475,15 @@ class AdminDashboard extends Component {
                 <TableBody>
                 {products
     .filter(product => {
-      // if (this.state.tableFilter === 'All') return ['In Progress', 'In Progress_r', 'Pending'].includes(product.status);
-      if (this.state.tableFilter === 'In Progress') return ['In Progress', 'In progress_R'].includes(product.status);
+      if (this.state.tableFilter === 'All') return ['In Progress', 'In progress_R', 'Pending'].includes(product.status);
+      if (this.state.tableFilter === 'In Progress') return ['In Progress'].includes(product.status);
+      if (this.state.tableFilter === 'In Progress R') return ['In progress_R'].includes(product.status);
       if (this.state.tableFilter === 'Pending') return product.status === 'Pending';
     })
     .sort((a, b) => new Date(b.reqDate) - new Date(a.reqDate))
-    .slice(0, 5)
+    // .slice(0, 5)
+    .slice(indexOfFirstProduct, indexOfLastProduct)
+    
     .map((product, index) => (
                     <TableRow key={index}>
                       <TableCell>{product.name}</TableCell>
@@ -465,6 +505,13 @@ class AdminDashboard extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Pagination
+            count={totalPages} // Total number of pages based on filtered products
+            page={currentPage} // Current page
+            onChange={(event, value) => this.setState({ currentPage: value })} // Handle page change
+            color="primary" // Set color
+            style={{ marginTop: '20px', display: 'flex', justifyContent: 'left', marginBottom:'5px' }} // Center the pagination
+            />
           </Paper>
         </div>
       </div>
