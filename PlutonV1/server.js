@@ -1147,6 +1147,9 @@ app.get("/get-config-list", (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
 
 
 // Other existing routes...
