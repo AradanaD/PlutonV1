@@ -50,7 +50,7 @@ const Sidebar = () => {
                         <NavLink to="/InflowOutflow" activeClassName="active" className="sidebar-link">InflowOutflow</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/User  Management" activeClassName="active" className="sidebar-link">Users Management</NavLink>
+                        <NavLink to="/UserManagement" activeClassName="active" className="sidebar-link">User Management</NavLink>
                     </li>
                 </ul>
                 <div className="sidebar-bottom">
